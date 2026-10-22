@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld('bkDeviceMonitor', {
   platform: process.platform,
   request: (path, method = 'GET') => ipcRenderer.invoke('bkdm:request', path, method),
   saveFile: file => ipcRenderer.invoke('bkdm:save', file),
+  apk: input => ipcRenderer.invoke('bkdm:apk', input),
   onEvent: callback => {
     const listener = (_event, name, data) => callback(name, data);
     ipcRenderer.on('bkdm:event', listener);

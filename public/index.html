@@ -4,7 +4,7 @@
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#1c1c1c"><meta name="description" content="BKDeviceMonitor — 通过 ADB 实时观察 Android 手机性能，查看详细硬件配置与系统信息。">
   <title>BKDeviceMonitor · 手机性能监测</title>
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/hardware.css"><link rel="stylesheet" href="/insights.css"><link rel="stylesheet" href="/desktop.css"><link rel="stylesheet" href="/theme.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/hardware.css"><link rel="stylesheet" href="/insights.css"><link rel="stylesheet" href="/desktop.css"><link rel="stylesheet" href="/theme.css"><link rel="stylesheet" href="/apk-install.css">
 </head>
 <body>
   <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg"><defs>
@@ -15,6 +15,7 @@
     <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 5h4m-3 14h2"/></symbol>
     <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M6 15l4-5 4 3 6-8"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></symbol>
+    <symbol id="i-install" viewBox="0 0 24 24"><path d="M12 3v11m-4-4 4 4 4-4M4 15v6h16v-6"/></symbol>
     <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 4 12 8-12 8z"/></symbol>
     <symbol id="i-temp" viewBox="0 0 24 24"><path d="M9 14.5V5a3 3 0 0 1 6 0v9.5a5 5 0 1 1-6 0ZM12 9v9"/><circle cx="12" cy="18" r="1"/></symbol>
@@ -44,14 +45,14 @@
     <div class="sidebar-bottom">
       <div class="local-note"><span class="local-indicator"></span><span>本地运行，数据留在此设备</span></div>
       <button class="help-button" id="help-button"><svg><use href="#i-help"/></svg>连接与指标说明<svg class="help-arrow"><use href="#i-chevron"/></svg></button>
-      <div class="sidebar-footer"><span>BKDeviceMonitor</span><span>v1.2.1</span></div>
+      <div class="sidebar-footer"><span>BKDeviceMonitor</span><span>v1.3.0</span></div>
     </div>
   </aside>
 
   <div class="app-shell">
     <header class="topbar"><div class="breadcrumbs"><svg><use href="#i-chart"/></svg><span>设备实验室</span><span class="crumb-slash">/</span><strong id="breadcrumb">性能总览</strong></div><div class="topbar-right"><span class="local-chip"><span></span>LOCAL</span><span class="topbar-divider"></span><time id="clock">--:--:--</time><span class="avatar">B</span></div></header>
     <main>
-      <section class="page-heading"><div><div class="eyebrow">DEVICE OBSERVABILITY</div><h1 id="page-title">性能总览<span class="live-label"><i></i>实时</span></h1><p id="page-description">实时查看设备负载、内存和温度。</p></div><div class="heading-actions"><button class="button secondary" id="export-button"><svg><use href="#i-arrow"/></svg>导出数据</button><button class="button primary" id="connect-button"><svg><use href="#i-link"/></svg>连接设备</button></div></section>
+      <section class="page-heading"><div><div class="eyebrow">DEVICE OBSERVABILITY</div><h1 id="page-title">性能总览<span class="live-label"><i></i>实时</span></h1><p id="page-description">实时查看设备负载、内存和温度。</p></div><div class="heading-actions"><button class="button secondary" id="install-apk-button" hidden><svg><use href="#i-install"/></svg><span>安装 APK</span></button><button class="button secondary" id="export-button"><svg><use href="#i-arrow"/></svg>导出数据</button><button class="button primary" id="connect-button"><svg><use href="#i-link"/></svg>连接设备</button></div></section>
 
       <div class="connection-alert" id="connection-alert" role="status"><span class="alert-dot"></span><span id="connection-message">正在检测 ADB 设备…</span><button id="retry-button">重新检测 <span>↻</span></button></div>
 
@@ -99,6 +100,18 @@
   </div>
 
   <dialog id="connection-dialog"><div class="dialog-heading"><span class="dialog-icon"><svg><use href="#i-link"/></svg></span><button class="icon-button" id="close-dialog" aria-label="关闭"><svg><use href="#i-close"/></svg></button></div><h2>连接设备</h2><p class="dialog-description">通过 USB 连接 Android 手机，开启本地实时监测。</p><div class="connect-steps"><div><span>01</span><p>在手机「开发者选项」中开启 <strong>USB 调试</strong></p></div><div><span>02</span><p>用 USB 数据线连接电脑，在手机上点击 <strong>允许调试</strong></p></div><div><span>03</span><p>从下面选择设备，即可开始采集</p></div></div><div class="device-list-heading"><span>可用设备</span><button id="refresh-devices">↻ 刷新列表</button></div><div id="dialog-devices"></div><details><summary>这些指标如何计算？</summary><p>CPU：/proc/stat 两次采样的非空闲时间占比，整机及各核心均为 0–100%。内存：1 − MemAvailable / MemTotal。GPU：KGSL gpubusy 的 busy / total。温度来自电池传感器，不代表 CPU 核心温度。进程 CPU 按核心数归一化至整机口径。设备切换后清空当前历史；重新加载界面可恢复本次运行期间最近 15 分钟数据。</p></details><p class="dialog-privacy"><svg><use href="#i-check"/></svg>所有数据仅在本机处理，ADB 只执行读取命令。</p></dialog>
+  <dialog id="apk-dialog" aria-labelledby="apk-title">
+    <div class="dialog-heading"><span class="dialog-icon"><svg><use href="#i-install"/></svg></span><button class="icon-button" id="apk-close" aria-label="收起安装面板"><svg><use href="#i-close"/></svg></button></div>
+    <h2 id="apk-title">安装 APK</h2><p class="dialog-description">选择本地安装包，将应用安装到指定的 Android 设备。</p>
+    <div class="apk-file-row"><span class="apk-file-icon">APK</span><div><strong id="apk-filename">尚未选择文件</strong><small id="apk-filesize">支持独立 .apk 安装包</small></div><button class="button secondary" id="apk-choose">选择文件</button></div>
+    <div class="apk-device-heading"><label for="apk-device">安装到设备</label><button id="apk-refresh" type="button">↻ 刷新</button></div>
+    <select id="apk-device" aria-describedby="apk-device-note"><option value="">正在检测设备…</option></select>
+    <p id="apk-device-note" class="apk-note">请在手机上允许 USB 调试。</p>
+    <div id="apk-status" class="apk-status" data-phase="idle"><div id="apk-progress" class="apk-progress" role="progressbar" aria-label="正在安装 APK" hidden><span></span></div><p id="apk-message" role="status" aria-live="polite">选择 APK，然后选择需要安装的设备。</p></div>
+    <details id="apk-details" hidden><summary>ADB 安装详情</summary><pre id="apk-output"></pre></details>
+    <p class="apk-note apk-policy">若应用已安装，将尝试覆盖更新并保留数据。不会自动卸载旧版、强制降级或授予全部权限。</p>
+    <div class="apk-actions"><span id="apk-footer-note">安装前请确认文件和目标设备。</span><button class="button primary" id="apk-start" disabled><svg><use href="#i-install"/></svg><span>开始安装</span></button></div>
+  </dialog>
   <div id="toast" class="toast" role="status"></div>
   <script src="/app.js" type="module"></script>
 </body>

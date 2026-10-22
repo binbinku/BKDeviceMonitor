@@ -4,11 +4,13 @@ import { join, basename, extname } from 'node:path';
 import { writeFile } from 'node:fs/promises';
 import { createMonitor } from '../monitor.mjs';
 import { resolveAdb } from './adb.mjs';
+import { createApkInstaller } from './apk-installer.mjs';
 
 const publicRoot = fileURLToPath(new URL('../public/', import.meta.url));
 app.setName('BKDeviceMonitor');
 protocol.registerSchemesAsPrivileged([{ scheme: 'bkdevicemonitor', privileges: { standard: true, secure: true, supportFetchAPI: true } }]);
-let window, monitor;
+let window, monitor, installer;
+let choosingApk = false;
 const ownsInstance = app.requestSingleInstanceLock();
 if (!ownsInstance) app.quit();
 app.on('second-instance', () => { if (window) { if (window.isMinimized()) window.restore(); window.show(); window.focus(); } });
@@ -50,7 +52,29 @@ if (ownsInstance) app.whenReady().then(async () => {
       return new Response(response.body, { status: response.status, headers });
     } catch { return new Response('Not found', { status: 404 }); }
   });
-  monitor = createMonitor({ adbPath: await resolveAdb({ resourcesPath: process.resourcesPath }) });
+  const adbPath = await resolveAdb({ resourcesPath: process.resourcesPath });
+  monitor = createMonitor({ adbPath });
+  installer = createApkInstaller({
+    adbPath,
+    getDevices: async () => (await monitor.request('/api/devices')).data.devices,
+    onChange: state => { if (window && !window.isDestroyed()) window.webContents.send('bkdm:event', 'apk-install', state); }
+  });
+  ipcMain.handle('bkdm:apk', async (event, input) => {
+    trusted(event);
+    try {
+      if (!input || typeof input !== 'object') throw new Error('无效的 APK 操作。');
+      if (input.action === 'state') return { state: installer.state() };
+      if (input.action === 'install') return { state: await installer.install({ fileId: input.fileId, serial: input.serial }) };
+      if (input.action !== 'choose') throw new Error('无效的 APK 操作。');
+      if (choosingApk || ['checking', 'installing'].includes(installer.state().phase)) throw new Error('请等待当前选择或安装完成。');
+      choosingApk = true;
+      try {
+        const result = await dialog.showOpenDialog(window, { title: '选择要安装的 APK', properties: ['openFile'], filters: [{ name: 'Android 安装包', extensions: ['apk'] }] });
+        if (result.canceled || !result.filePaths.length) return { canceled: true, state: installer.state() };
+        return { state: await installer.select(result.filePaths[0]) };
+      } finally { choosingApk = false; }
+    } catch (error) { return { error: error.message }; }
+  });
   monitor.subscribe((name, data) => { if (window && !window.isDestroyed()) window.webContents.send('bkdm:event', name, data); });
   ipcMain.handle('bkdm:request', (event, path, method) => { trusted(event); return monitor.request(path, method); });
   ipcMain.handle('bkdm:save', async (event, file) => {
@@ -72,4 +96,4 @@ if (ownsInstance) app.whenReady().then(async () => {
 
 // Closing the last window exits on both platforms, stopping all owned samplers.
 app.on('window-all-closed', () => app.quit());
-app.on('before-quit', () => monitor?.stop());
+app.on('before-quit', () => { installer?.stop(); monitor?.stop(); });

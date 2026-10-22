@@ -48,7 +48,7 @@ Deep monitoring also supports a separate CSV export and restores up to 15 minute
 
 ## Local access & tests
 
-Desktop mode does not listen on HTTP ports. Restricted IPC calls the collection engine directly. Optional web mode listens only on `127.0.0.1` and rejects cross-origin API calls. ADB collection commands are fixed; selected device serials must belong to the current authorized device list. No root, Shizuku, or phone companion app is required. Readable metrics vary by vendor and Android version.
+Desktop mode does not listen on HTTP ports. Restricted IPC calls the collection engine directly. Optional web mode listens only on `127.0.0.1` and rejects cross-origin API calls. Performance collection uses fixed read-only ADB commands; selected device serials must belong to the current authorized device list. Desktop APK installation is a separate, user-initiated native operation and is not exposed through the web API. No root, Shizuku, or phone companion app is required. Readable metrics vary by vendor and Android version.
 
 ```sh
 npm test

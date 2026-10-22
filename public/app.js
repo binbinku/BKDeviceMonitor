@@ -1,4 +1,5 @@
 import { request, openEvents, saveDownload, isDesktop } from './transport.js';
+import { initApkInstall } from './apk-install.js';
 import { renderHardware, resetHardware } from './hardware-view.js';
 import { initInsights, hydrateInsights, sampleInsights, updateInsightSession, updateInsightTarget, setInsightConnection, setInsightPaused, resetInsights, exportInsights } from './insights.js';
 
@@ -234,6 +235,7 @@ function applyState(state, reset = false) {
 }
 
 const events = openEvents();
+initApkInstall({ events, toast });
 events.addEventListener('init', event => applyState(JSON.parse(event.data)));
 events.addEventListener('reset', event => applyState(JSON.parse(event.data), true));
 events.addEventListener('sample', event => appendSample(JSON.parse(event.data)));
@@ -367,6 +369,6 @@ requestDraw();
 if (isDesktop) {
   document.querySelector('.workspace small').textContent = 'USB 设备监测';
   document.querySelector('.local-chip').replaceChildren(Object.assign(document.createElement('span')), document.createTextNode('本地采集'));
-  document.querySelector('.sidebar-footer span:last-child').textContent = 'v1.2.1';
+  document.querySelector('.sidebar-footer span:last-child').textContent = 'v1.3.0';
   document.querySelector('.workspace-dots').textContent = '•';
 }

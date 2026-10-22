@@ -29,3 +29,10 @@ export async function saveDownload(content, filename, type = 'application/json')
   const link = document.createElement('a'); link.href = url; link.download = filename; link.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000); return true;
 }
+
+export async function apkRequest(input) {
+  if (!isDesktop) throw new Error('APK 安装仅在桌面版中提供。');
+  const result = await window.bkDeviceMonitor.apk(input);
+  if (result.error) throw new Error(result.error);
+  return result;
+}

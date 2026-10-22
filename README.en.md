@@ -22,6 +22,7 @@ A local Android performance monitor for your desktop. Connect a phone, inspect l
 - **Inspect app performance** — Follow the foreground app or select a running one to inspect app CPU and memory, plus FPS, frame intervals, and jank where available.
 - **Explore device hardware** — Browse CPU, GPU, display, storage, system, and sensor details, with device readings clearly distinguished from official model specifications.
 - **Keep a test record** — Capture sessions, peaks, and summaries; export CSV trends, JSON session reports, and hardware profiles.
+- **Install local APKs (v1.3.0 source)** — Use a native file picker, an explicit device target, background installation status, and actionable error messages.
 - **Stay focused** — A Codex-inspired dark workspace, restrained chart colors, and an immersive macOS window. Desktop mode needs no separate backend.
 
 > 🔌 Connect over USB / ADB. No root, Shizuku, or companion phone app required. Once dependencies and ADB are prepared, monitoring and analysis work offline.
@@ -99,6 +100,18 @@ On Windows, install the phone manufacturer's USB driver if the device is not rec
 | Windows 11 | x64 ZIP | Cross-built; not yet tested on matching hardware |
 
 Download a desktop package, run from source, or build your own package. Packages include Electron and ADB, so end users need neither Node.js nor Android Studio. Current macOS builds are ad-hoc signed and not notarized; Windows builds have no certificate signature.
+
+## 📦 Install an APK
+
+Available in the **current v1.3.0 source and local builds**. The published v1.2.1 release does not include this feature.
+
+1. Click **安装 APK** at the top right of the desktop app, then **选择文件** to open the native file picker.
+2. Choose a local standalone `.apk` file and verify the filename, target device model, and serial number.
+3. Click **开始安装**, keep USB connected, and check for any installation confirmation on the phone.
+
+Uses `adb install -r` to update an existing app while retaining its data. It never automatically uninstalls apps, forces a downgrade, or grants all runtime permissions. Signature conflicts, insufficient storage, USB install restrictions, and other common errors have actionable messages; expand the ADB details for raw output. Progress is indeterminate rather than a fabricated percentage. Closing the panel or reloading the UI does not stop the main-process job. Exiting the app stops the local command but cannot guarantee rollback of work already performed on the phone.
+
+Only standalone APKs are supported, not `.aab`, `.apks`, or split APK sets. Installation is desktop-only; web mode exposes no file installation endpoint.
 
 ## 🛠 Development & builds
 

@@ -1,0 +1,29 @@
+#install-apk-button[hidden], #apk-progress[hidden], #apk-details[hidden] { display: none; }
+#apk-dialog { width: 550px; max-height: calc(100vh - 48px); overflow-y: auto; }
+.apk-file-row { display: flex; align-items: center; gap: 13px; padding: 17px 0; margin: 16px 0 9px; border-top: 1px solid #ffffff13; border-bottom: 1px solid #ffffff13; }
+.apk-file-icon { display: grid; place-items: center; flex: 0 0 42px; height: 48px; border: 1px solid #ffffff20; border-radius: 7px; color: #b8c9bd; font: 11px var(--mono); background: #ffffff03; }
+.apk-file-row > div { min-width: 0; flex: 1; }
+.apk-file-row strong { display: block; color: #ddd; font-size: 12px; font-weight: 500; overflow-wrap: anywhere; }
+.apk-file-row small { display: block; margin-top: 7px; color: #929292; font-size: 10px; }
+.apk-file-row .button { flex-shrink: 0; font-size: 11px; padding: 0 12px; }
+.apk-device-heading { display: flex; justify-content: space-between; align-items: center; margin: 22px 0 10px; font-size: 12px; color: #bbb; }
+#apk-refresh { border: 0; background: none; color: #aaa; font-size: 11px; }
+#apk-device { width: 100%; padding: 11px 12px; border: 1px solid #ffffff26; border-radius: 7px; background: #2c2c2c; color: #ddd; font-family: inherit; font-size: 12px; color-scheme: dark; }
+.apk-note { font-size: 11px; color: #969696; line-height: 1.8; margin: 9px 0; }
+.apk-status { padding: 14px 16px; margin: 20px 0 0; border: 1px solid #ffffff15; border-radius: 8px; background: #ffffff03; }
+.apk-status p { margin: 0; font-size: 12px; color: #bbb; line-height: 1.8; overflow-wrap: anywhere; }
+.apk-status[data-phase="success"] { border-color: #91c5a147; }
+.apk-status[data-phase="success"] p { color: #b6d4bf; }
+.apk-status[data-phase="error"] { border-color: #cf9e8d54; }
+.apk-status[data-phase="error"] p { color: #d5b1a4; }
+.apk-progress { height: 3px; margin: 0 0 13px; overflow: hidden; background: #ffffff0c; border-radius: 3px; }
+.apk-progress span { display: block; height: 100%; width: 35%; background: #a8bdb0; animation: apk-progress 1.6s ease-in-out infinite; }
+@keyframes apk-progress { from { transform: translateX(-110%); } to { transform: translateX(390%); } }
+@media (prefers-reduced-motion: reduce) { .apk-progress span { animation: none; width: 100%; opacity: .5; } }
+#apk-output { color: #b9b9b9; font: 11px/1.8 var(--mono); max-height: 140px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; background: #1d1d1d; padding: 12px; border-radius: 6px; user-select: text; }
+.apk-policy { padding: 16px 0; border-bottom: 1px solid #ffffff12; margin-bottom: 17px; }
+.apk-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.apk-actions > span { color: #888; font-size: 10px; line-height: 1.8; }
+#apk-dialog button:disabled, #apk-dialog select:disabled { opacity: .45; cursor: not-allowed; }
+#apk-dialog :focus-visible { outline: 2px solid #a6bcae; outline-offset: 3px; }
+@media (max-width: 590px) { .apk-actions { flex-direction: column; align-items: stretch; } .apk-actions .button { justify-content: center; } }
