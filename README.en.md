@@ -60,6 +60,18 @@ CPU is normalized to a device-wide `0–100%` scale. Memory utilization is `1 �
 
 ## 🚀 Quick start
 
+### Download the desktop app
+
+Open the **[v1.2.1 Release](https://github.com/binbinku/BKDeviceMonitor/releases/tag/v1.2.1)**, or download the package for your computer:
+
+| Your computer | Package |
+| :--- | :--- |
+| Mac · Apple Silicon (M series) | [macOS ARM64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-mac-arm64.zip) |
+| Mac · Intel | [macOS x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-mac-x64.zip) |
+| Windows 11 · x64 | [Windows x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-win-x64.zip) |
+
+On Mac, extract and move `BKDeviceMonitor.app` to Applications. On Windows, extract the entire archive and run `BKDeviceMonitor.exe`. The release includes `SHA256SUMS.txt` for verification.
+
 ### Run from source
 
 You need **Node.js 22.12+**, npm, and an Android phone with USB debugging enabled. Installing dependencies and preparing ADB initially require internet access.
@@ -86,7 +98,7 @@ On Windows, install the phone manufacturer's USB driver if the device is not rec
 | macOS · Intel | x64 ZIP | Cross-built; not yet tested on matching hardware |
 | Windows 11 | x64 ZIP | Cross-built; not yet tested on matching hardware |
 
-Run from source as above, or build your own package. No prebuilt GitHub Release has been published yet. Packages include Electron and ADB, so end users need neither Node.js nor Android Studio. Current macOS builds are ad-hoc signed and not notarized; Windows builds have no certificate signature.
+Download a desktop package, run from source, or build your own package. Packages include Electron and ADB, so end users need neither Node.js nor Android Studio. Current macOS builds are ad-hoc signed and not notarized; Windows builds have no certificate signature.
 
 ## 🛠 Development & builds
 

@@ -60,6 +60,18 @@ CPU 以整机 `0–100%` 归一化；内存使用率为 `1 − MemAvailable / Me
 
 ## 🚀 快速开始
 
+### 下载桌面版
+
+前往 **[v1.2.1 Release](https://github.com/binbinku/BKDeviceMonitor/releases/tag/v1.2.1)**，或按电脑平台直接下载：
+
+| 你的电脑 | 安装包 |
+| :--- | :--- |
+| Mac · Apple Silicon（M 系列） | [macOS ARM64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-mac-arm64.zip) |
+| Mac · Intel | [macOS x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-mac-x64.zip) |
+| Windows 11 · x64 | [Windows x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-win-x64.zip) |
+
+Mac 解压后将 `BKDeviceMonitor.app` 放入「应用程序」；Windows 解压完整目录后运行 `BKDeviceMonitor.exe`。Release 附有 `SHA256SUMS.txt` 供校验。
+
 ### 从源码启动
 
 需要 **Node.js 22.12+**、npm，以及开启 USB 调试的 Android 手机。首次安装依赖和准备 ADB 需要联网。
@@ -86,7 +98,7 @@ Windows 若无法识别 ADB 设备，请安装手机厂商的 USB 驱动。准�
 | macOS · Intel | x64 ZIP | 已交叉构建，待对应机器验证 |
 | Windows 11 | x64 ZIP | 已交叉构建，待对应机器验证 |
 
-当前请按上述步骤从源码启动，或自行构建安装包；仓库尚未发布预编译 Release。构建产物包含 Electron 与 ADB，使用时无需安装 Node.js 或 Android Studio。当前 macOS 包仅做 ad-hoc 签名，未公证；Windows 包未做证书签名。
+可以直接下载桌面版，也可以从源码启动或自行构建。构建产物包含 Electron 与 ADB，使用时无需安装 Node.js 或 Android Studio。当前 macOS 包仅做 ad-hoc 签名，未公证；Windows 包未做证书签名。
 
 ## 🛠 开发与构建
 
