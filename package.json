@@ -23,7 +23,7 @@
     "type": "git",
     "url": "https://github.com/binbinku/BKDeviceMonitor.git"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "build": {
     "appId": "com.bk.devicemonitor",
     "productName": "BKDeviceMonitor",
@@ -37,6 +37,7 @@
       "public/**",
       "*.mjs",
       "package.json",
+      "LICENSE",
       "!server.mjs"
     ],
     "mac": {
