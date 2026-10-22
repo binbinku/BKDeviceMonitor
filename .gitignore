@@ -1,0 +1,12 @@
+node_modules/
+release/
+resources/darwin/
+resources/win32/
+.DS_Store
+build/icon.iconset/
+work/
+.codex/
+.env
+.env.*
+!.env.example
+*.log

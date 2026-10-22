@@ -1,0 +1,444 @@
+/* BKDeviceMonitor workspace theme: neutral surfaces, restrained controls, readable telemetry. */
+:root {
+  --bg: #1c1c1c;
+  --surface: #232323;
+  --surface-up: #2d2d2d;
+  --line: #ffffff12;
+  --text: #ececec;
+  --muted: #a0a0a0;
+  --dim: #858585;
+  --green: #91c5a1;
+  --gpu: #b2a0cf;
+  --memory: #8faed0;
+  --temp: #d6b183;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+body { font-size: 13px; }
+button, a, summary { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid #bdbdbd; outline-offset: 3px;
+}
+.sidebar { width: 224px; padding: 25px 14px 0; background: #151515; border-color: #ffffff08; }
+.brand { gap: 8px; padding: 0 9px; font-size: 16px; font-weight: 600; letter-spacing: -.6px; white-space: nowrap; }
+.brand-mark { width: 27px; height: 27px; border: 1px solid #ffffff32; border-radius: 7px; background: none; color: #ddd; }
+.brand-mark svg { width: 23px; height: 23px; stroke-width: 1.7; }
+.brand-dot { color: #858585; }
+.workspace { border: 0; background: none; border-radius: 0; padding: 0 10px; margin: 27px 0 24px; }
+.workspace-icon, .workspace-dots { display: none; }
+.workspace strong { color: #b9b9b9; font-size: 12px; }
+.workspace small { color: #717171; letter-spacing: 0; font-size: 10px; margin-top: 6px; }
+.nav-caption { color: #797979; letter-spacing: 0; font-size: 11px; margin: 0 10px 9px; }
+.nav-caption > span { border: 0; padding: 0; color: #858585; font-size: 10px; }
+.nav-item { padding: 10px 11px; gap: 10px; border-radius: 6px; margin-bottom: 3px; color: #aaa; font-size: 12px; }
+.nav-item svg { width: 16px; height: 16px; }
+.nav-item:hover { background: #222; color: #ddd; }
+.nav-item.active { background: #2a2a2a; color: #f1f1f1; }
+.nav-item.active::before { display: none; }
+.nav-shortcut { display: none; }
+.sidebar-divider { margin: 22px 10px; background: #ffffff0d; }
+.sidebar-device { padding: 10px; gap: 9px; }
+.device-icon { background: #232323; border-color: transparent; color: #b5b5b5; width: 30px; height: 34px; }
+.sidebar-device strong { font-size: 11px; max-width: 133px; }
+.sidebar-device small { font-size: 10px; color: #888; }
+.local-note { font-size: 10px; color: #858585; padding: 18px 10px 13px; }
+.local-indicator { border-color: #858585; }
+.help-button { border: 0; color: #999; padding: 10px; font-size: 11px; }
+.help-button:hover { background: #222; }
+.sidebar-footer { color: #646464; font-size: 8px; letter-spacing: .4px; padding: 17px 10px; }
+.app-shell { margin-left: 224px; }
+.topbar, .desktop-mac .topbar { height: 64px; background: var(--bg); border: 0; padding: 0 32px; }
+.breadcrumbs { gap: 11px; font-size: 12px; color: #878787; }
+.breadcrumbs svg { color: #818181; width: 15px; height: 15px; }
+.breadcrumbs strong { color: #bcbcbc; }
+.crumb-slash { color: #555; }
+.topbar-right { gap: 14px; }
+.local-chip { font-family: var(--font); letter-spacing: 0; font-size: 11px; color: #939393; }
+.local-chip > span { width: 4px; height: 4px; background: #8c8c8c; }
+.topbar-divider { background: #ffffff12; }
+#clock { color: #898989; font-size: 11px; }
+.avatar { display: none; }
+main { max-width: 1460px; padding: 24px 32px 0; }
+.page-heading { margin-bottom: 24px; align-items: center; }
+.eyebrow { display: none; }
+h1 { font-size: 24px; font-weight: 550; letter-spacing: -.5px; gap: 12px; }
+.page-heading p { font-size: 12px; line-height: 1.7; letter-spacing: 0; color: #919191; margin-top: 9px; }
+.live-label, .hardware-label, body.paused .hardware-label, body.offline .hardware-label {
+  border: 0; background: none; color: #aaa; font: 10px var(--font); letter-spacing: 0; padding: 0;
+}
+.live-label i, .tiny-live i { box-shadow: none; }
+.heading-actions { padding-top: 0; gap: 8px; }
+.button { height: 34px; border-radius: 7px; font-size: 11px; padding: 0 13px; transition: background .15s; }
+.button.secondary { background: #ffffff05; border-color: #ffffff1c; color: #c2c2c2; }
+.button.secondary:hover { background: #ffffff0d; }
+.button.primary { background: #e5e5e5; border-color: #e5e5e5; color: #252525; }
+.button.primary:hover { background: #fff; }
+.button:active { transform: none; }
+.panel { background: var(--surface); border-color: var(--line); border-radius: 9px; box-shadow: none; }
+.device-banner { background: #ffffff03; padding: 17px 20px; min-height: 102px; margin-bottom: 27px; border-color: #ffffff0c; }
+.phone-visual { width: 32px; height: 43px; margin-right: 17px; display: grid; place-items: center; }
+.phone-body { background: none; width: 21px; height: 34px; border: 1.3px solid #8b8b8b; border-radius: 5px; transform: none; box-shadow: none; margin: 0; }
+.phone-body::after { content: ''; position: absolute; bottom: 4px; left: 7px; height: 2px; width: 5px; border-radius: 2px; background: #888; }
+.phone-camera, .phone-logo, .phone-aura { display: none; }
+.device-title-line { gap: 10px; }
+.device-title-line h2 { font-size: 16px; letter-spacing: -.2px; font-weight: 550; }
+.connection-badge, body.connected .connection-badge { border: 0; background: none; color: #aaa; padding: 0; font-size: 10px; }
+body.connected .connection-badge i { color: var(--green); }
+.device-specs { font-size: 11px; color: #a1a1a1; margin-top: 8px; }
+.device-serial { font-size: 10px; color: #858585; margin-top: 9px; }
+.device-serial > span:first-child { color: #999; font-size: 10px; }
+.usb-tag { font-size: 8px; color: #888; border-color: #ffffff19; }
+.spec-dot { color: #555; }
+.device-banner-right { gap: 14px; }
+.battery-mini { color: #999; font-size: 11px; }
+.battery-mini strong { color: #ccc; font-size: 11px; }
+.battery-shape, .battery-shape::after { border-color: #999; }
+.battery-shape::after { background: #999; }
+.battery-shape i { background: #aaa; }
+.battery-mini svg { color: #aaa; }
+.sample-indicator { color: #808080; font-size: 10px; }
+.signal-bars i { background: #8c8c8c; }
+.metric-grid { gap: 0; padding-bottom: 25px; margin-bottom: 27px; border-bottom: 1px solid var(--line); }
+.metric-card.panel { background: none; border: 0; border-right: 1px solid var(--line); border-radius: 0; padding: 2px 22px 0; }
+.metric-card:first-child { padding-left: 0; }
+.metric-card:last-child { padding-right: 0; border-right: 0; }
+.metric-top { color: #b0b0b0; font-size: 12px; }
+.metric-top svg { color: #a2a2a2; width: 14px; height: 14px; }
+.metric-tag { display: none; }
+.metric-value { margin-top: 18px; gap: 4px; }
+.metric-value > strong { font-family: var(--font); font-variant-numeric: tabular-nums; font-weight: 450; font-size: 38px; letter-spacing: -1.4px; }
+.metric-value > span:nth-child(2) { font: 13px var(--font); color: #8e8e8e; }
+.metric-state { color: #959595 !important; background: none; padding: 0; font-size: 10px !important; }
+.temperature .metric-state[data-level='warm'] { color: var(--temp) !important; }
+.temperature .metric-state[data-level='hot'] { color: #e59d93 !important; }
+.sparkline-wrap, .temperature-graphic { height: 34px; margin-top: 12px; }
+.temp-track { background: #ffffff12; height: 3px; }
+.temp-track > i, .temp-track > b { height: 3px; }
+.temp-track > b { background: var(--bg); }
+.temperature-graphic > div:last-child { color: #858585; font-size: 9px; }
+.metric-foot { border: 0; margin-top: 5px; padding-top: 8px; font-size: 10px; color: #818181; }
+.metric-foot > span:last-child { color: #929292; font-size: 9px; }
+.main-grid { grid-template-columns: minmax(0, 1fr) 270px; gap: 26px; border-bottom: 1px solid var(--line); padding-bottom: 25px; margin-bottom: 26px; }
+.performance-panel, .memory-panel, .cores-panel, .processes-panel { background: none; border: 0; border-radius: 0; }
+.performance-panel { padding-right: 26px; border-right: 1px solid var(--line); }
+.panel-header { padding: 0; gap: 14px; }
+.panel-header h2 { font-size: 13px; font-weight: 550; letter-spacing: 0; }
+.panel-header p { font-size: 11px; color: #828282; line-height: 1.7; margin-top: 7px; }
+.tiny-live { font-size: 10px; color: #8e8e8e; }
+.segmented { border: 0; background: #ffffff05; padding: 3px; border-radius: 6px; }
+.segmented button { font-size: 10px; padding: 5px 8px; border-radius: 4px; color: #999; }
+.segmented button.active { background: #3a3a3a; color: #e1e1e1; box-shadow: none; }
+.icon-button { border-color: #ffffff15; background: none; color: #aaa; height: 30px; width: 30px; border-radius: 6px; }
+.icon-button:hover { background: #ffffff0c; color: #eee; }
+.chart-legend { padding: 22px 0 16px; gap: 19px; }
+.legend-item { font-size: 11px; color: #aaa; }
+.legend-item strong { color: #c6c6c6; font-size: 10px; }
+.chart-unit { color: #858585; font-size: 10px; }
+.chart-container { height: 235px; margin: 0; }
+.chart-bottom { border: 0; padding: 12px 0 0; margin-top: 8px; font-size: 10px; color: #828282; }
+.chart-tooltip { color: #ccc; border-color: #ffffff20; background: #292929f5; box-shadow: 0 4px 20px #0003; }
+#chart-empty { color: #aaa; font-size: 13px; }
+#chart-empty > span { color: #858585; font-size: 11px; }
+.donut-container { width: 175px; height: 175px; margin: 12px auto 8px; }
+.donut circle { stroke-width: 9; }
+.donut-track { stroke: #303030; }
+.donut-label > span:first-child { color: #999; font-size: 10px; }
+.donut-label > strong { font-family: var(--font); font-variant-numeric: tabular-nums; font-size: 30px; letter-spacing: -1px; }
+.donut-label > span:last-child { color: #929292; font-size: 10px; }
+.donut-label small { color: #999; }
+.memory-details { margin: 0; }
+.memory-details > div, .memory-details strong { font-size: 11px; }
+.memory-details > div > span, .memory-cache > span { color: #999 !important; }
+.memory-details strong { color: #c2c2c2; }
+.memory-details > div.memory-cache { padding-top: 12px; font-size: 10px; }
+.memory-cache strong { color: #999; font-size: 10px; }
+.memory-note { color: #858585; font-size: 10px; line-height: 1.7; margin: 13px 0 0; }
+.available-dot { background: #555; }
+.lower-grid { gap: 27px; }
+.cores-panel { padding-right: 26px; border-right: 1px solid var(--line); }
+.count-badge { font-size: 9px; background: #ffffff08; color: #999; border-radius: 4px; }
+.small-text { color: #8b8b8b; font-size: 10px; }
+.cores-grid { margin: 20px 0 16px; gap: 9px; }
+.core-card { border: 0; background: #ffffff04; padding: 13px; border-radius: 6px; --core-color: var(--green); }
+.core-card.big { --core-color: var(--memory); }
+.core-card.prime { --core-color: var(--gpu); }
+.core-top, .core-load { color: #999; font-size: 9px; }
+.core-freq { color: #d0d0d0; font-size: 17px; font-variant-numeric: tabular-nums; }
+.core-freq small { color: #888; font-size: 8px; }
+.core-bar { background: #ffffff0b; }
+.cores-footer { padding: 12px 0 0; border-color: #ffffff0b; font-size: 9px; color: #929292; gap: 12px; }
+.core-dot.little { background: var(--green); }
+.core-dot.big { background: var(--memory); }
+.core-dot.prime { background: var(--gpu); }
+.freq-note { font-size: 9px; color: #858585; }
+.table-wrap { padding: 18px 0 0; }
+th { font-size: 10px; color: #898989; border-color: var(--line); padding-bottom: 12px; }
+th span { color: #999; }
+td { font-size: 11px; border-color: #ffffff08; padding: 10px 0; color: #bcbcbc; }
+td:nth-child(n+2) { font-size: 10px; color: #bababa; }
+.process-icon, tr:nth-child(2n) .process-icon { background: #2a2a2a; color: #a4a4a4; border: 0; width: 25px; height: 27px; border-radius: 5px; }
+.process-title { font-size: 10px; color: #bcbcbc; }
+.process-meta { color: #858585; font-size: 9px; }
+.empty-table { color: #888; }
+.page-footer { color: #737373; font-size: 10px; border-top: 1px solid var(--line); margin-top: 26px; padding-top: 16px; }
+.page-footer > span:last-child { display: none; }
+.footer-separator { color: #555; }
+.gpu-detail { background: #ffffff03; border: 0; font-size: 12px; }
+.gpu-detail p, .gpu-detail small, .gpu-detail > div:last-child > span { color: #999; }
+.gpu-detail strong { color: #c4c4c4; }
+.connection-alert { background: #2b261e; border-color: #d6b18330; color: #d6b183; font-size: 12px; }
+body.paused .live-label, body.offline .live-label { background: none; border: 0; color: #999; }
+/* Hardware uses native disclosure controls and a single column of parameter groups. */
+.hardware-intro { background: none; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 2px 0 24px; }
+.hardware-eyebrow { font: 11px var(--font); color: #8c8c8c; letter-spacing: 0; }
+.hardware-intro h2 { font-size: 23px; font-weight: 550; margin-top: 8px; }
+.hardware-identity { font-size: 11px; color: #aaa; background: #ffffff04; border-color: #ffffff14; padding: 7px 10px; border-radius: 5px; }
+.hardware-introduction { color: #999; font-size: 12px; margin: 15px 0 22px; max-width: 850px; }
+.hardware-highlight > span:first-child { color: #999; font-size: 11px; }
+.hardware-highlight > strong { color: #ddd; font-size: 18px; letter-spacing: -.4px; }
+.hardware-source, .hardware-source.device, .hardware-source.profile, .hardware-source.missing { background: #ffffff03; border-color: #ffffff12; color: #999; font: 9px var(--font); letter-spacing: 0; padding: 3px 6px; border-radius: 4px; }
+.hardware-source.device::before, .hardware-source.profile::before { content: ''; width: 3px; height: 3px; border-radius: 50%; margin-right: 4px; align-self: center; }
+.hardware-source.device::before { background: #9aaba0; }
+.hardware-source.profile::before { background: #9ba7b5; }
+.hardware-provenance { color: #818181; font-size: 11px; padding: 18px 0; }
+.hardware-grid { display: block; }
+.hardware-card.panel { background: none; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 0; }
+.hardware-summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 20px 0; }
+.hardware-summary::-webkit-details-marker { display: none; }
+.hardware-summary::after { content: ''; width: 6px; height: 6px; border-right: 1.3px solid #888; border-bottom: 1.3px solid #888; transform: rotate(-45deg); margin-left: auto; margin-right: 5px; transition: transform .15s; flex-shrink: 0; }
+.hardware-card[open] > .hardware-summary::after { transform: rotate(45deg); }
+.hardware-summary:hover .hardware-card-head h2 { color: #fff; }
+.hardware-summary-text { min-width: 0; }
+.hardware-card-head h2 { font-size: 13px; color: #ccc; font-weight: 550; }
+.hardware-card .hardware-card-head svg, .hardware-card:nth-child(n) .hardware-card-head svg { color: #999; width: 16px; height: 16px; }
+.hardware-card-description { color: #828282; font-size: 11px; line-height: 1.8; margin: 7px 0 0 25px; }
+.hardware-rows { margin: -3px 0 20px 25px; }
+.hardware-row { grid-template-columns: 170px minmax(0, 1fr); padding: 12px 0; border-color: #ffffff08; gap: 24px; }
+.hardware-row dt { font-size: 12px; color: #999; }
+.hardware-row-value { font-size: 12px; color: #c8c8c8; }
+.hardware-row dd { align-items: flex-start; flex-direction: row; gap: 16px; }
+.hardware-row .hardware-source { font-size: 9px; padding: 3px 6px; }
+.hardware-capabilities { background: none; border: 0; border-top: 1px solid var(--line); padding: 22px 0; border-radius: 0; margin-top: 0; }
+.hardware-capabilities .hardware-card-description { margin-left: 0; }
+.hardware-capabilities .hardware-card-head svg { color: #999; }
+.capability-tags { gap: 8px; margin-top: 18px; }
+.capability-tag { background: #ffffff04; border: 0; color: #aaa; padding: 8px 10px; font-size: 11px; border-radius: 5px; }
+.capability-tag svg { color: #a3afa6; }
+.hardware-sources { padding: 0; }
+.hardware-sources p, .hardware-source-links a { color: #888; font-size: 10px; }
+.hardware-source-links a { color: #b6b6b6; border-color: #555; }
+.hardware-source-links a:hover { color: #eee; }
+.hardware-empty { background: none; color: #999; border: 1px dashed #ffffff15; }
+.hardware-empty > svg, .hardware-empty h2 { color: #ccc; }
+/* Deep monitoring and sessions share the same controls and quiet surfaces. */
+.insight-toolbar { background: #ffffff03; border-color: #ffffff0b; padding: 14px 16px; margin-bottom: 24px; gap: 13px; }
+.app-select-wrap label { font-size: 11px; color: #999; }
+.app-select-wrap select { background: #272727; border-color: #ffffff20; color: #ccc; font-size: 11px; border-radius: 6px; padding: 8px 10px; }
+.insight-toolbar > span { color: #8c8c8c; font-size: 10px; }
+.insight-toolbar > .button { height: 31px; font-size: 11px; }
+.insight-metrics { gap: 0; border-bottom: 1px solid var(--line); padding-bottom: 24px; }
+.insight-metric { background: none; border: 0; border-right: 1px solid var(--line); border-radius: 0; padding: 0 20px; }
+.insight-metric:first-child { padding-left: 0; }
+.insight-metric:last-child { padding-right: 0; border: 0; }
+.insight-metric > span { color: #aaa; font-size: 12px; }
+.insight-metric > strong { font-family: var(--font); font-variant-numeric: tabular-nums; font-size: 36px; color: #e2e2e2; font-weight: 450; letter-spacing: -1px; }
+.insight-metric small { color: #999; font-size: 12px; }
+.insight-metric p { color: #8d8d8d; font-size: 10px; line-height: 1.8; min-height: 36px; }
+.insight-range-bar { margin: 20px 0; color: #888; font-size: 10px; }
+.insight-grid { gap: 25px; }
+.insight-grid > section { background: none; border: 0; border-bottom: 1px solid var(--line); padding: 0 0 23px; border-radius: 0; }
+.insight-canvas-wrap { height: 220px; margin: 18px 0 0; }
+.insight-canvas-wrap > span { color: #888; font-size: 11px; }
+.frame-stats { border-color: var(--line); padding: 14px 0; }
+.frame-stats > div > span { color: #888; font-size: 10px; }
+.frame-stats strong { color: #c3c3c3; font-size: 13px; }
+.insight-note { color: #8c8c8c; font-size: 11px; line-height: 1.8; }
+.insight-chart-panel > .insight-note { border-color: #ffffff08; padding: 11px 0 0; }
+.frequency-legend { color: #999; margin: 19px 0 0; font-size: 10px; gap: 14px; }
+.frequency-canvas { height: 228px; }
+.insight-detail .hardware-card-head svg { color: #999; }
+.insight-description { color: #999; font-size: 11px; margin-top: 12px; }
+.thermal-badge { color: #b6c9ba; border: 0; background: #ffffff07; font-size: 10px; padding: 4px 7px; }
+.thermal-badge.warm { color: var(--temp); background: #d6b18312; }
+.sensor-row { grid-template-columns: 135px minmax(15px, 1fr) 65px; margin-top: 14px; }
+.sensor-row > span { color: #999; font-size: 10px; }
+.sensor-row > strong { color: #bbb; font-size: 11px; }
+.sensor-bar { background: #ffffff0d; }
+.sensor-bar i { background: #939d96; }
+.cooling-list { color: #888; font-size: 10px; border-color: var(--line); }
+.app-package { color: #b9b9b9; font-size: 12px; }
+.app-stat-grid { gap: 22px 17px; }
+.app-stat-grid > div > span { color: #999; font-size: 11px; }
+.app-stat-grid strong { font-size: 19px; color: #d1d1d1; }
+.app-stat-grid .network-rx { color: var(--green); }
+.app-stat-grid .network-tx { color: var(--gpu); }
+.pressure-foot { border-color: var(--line); color: #aaa; font-size: 10px; }
+.session-panel { background: #ffffff03; border-color: #ffffff0d; padding: 24px; margin-top: 28px; border-radius: 10px; }
+.session-heading h2 { font-size: 18px; font-weight: 550; letter-spacing: -.2px; }
+.session-heading p { color: #929292; font-size: 11px; }
+.session-state { color: #aaa; background: #ffffff05; border-color: #ffffff14; font-size: 10px; }
+.session-state.recording { color: #b3cfbb; background: #91c5a110; border-color: #91c5a12b; }
+.session-controls input { background: #1d1d1d; border-color: #ffffff1e; color: #d2d2d2; border-radius: 6px; font-size: 12px; }
+.session-controls input::placeholder { color: #858585; }
+.session-controls .button { font-size: 11px; }
+.session-stats { border-color: var(--line); }
+.session-stats span { color: #929292; font-size: 11px; }
+.session-stats strong { color: #ccc; font-size: 20px; }
+.session-events > div { color: #aaa; font-size: 10px; }
+.session-events time { color: #888; }
+/* Native dialogs are intentionally simple, with no bright decorative blocks. */
+dialog { background: #252525; border-color: #ffffff21; border-radius: 14px; padding: 25px; width: 490px; box-shadow: 0 24px 100px #0005; }
+dialog::backdrop { background: #0009; backdrop-filter: blur(3px); }
+.dialog-icon { width: 35px; height: 35px; background: #ffffff05; color: #ccc; border-color: #ffffff15; border-radius: 8px; }
+dialog h2 { font-size: 20px; letter-spacing: -.4px; }
+.dialog-description { color: #999; font-size: 12px; }
+.connect-steps { background: none; border-color: #ffffff0d; padding: 12px 14px; }
+.connect-steps > div > span { color: #8f8f8f; }
+.connect-steps p { font-size: 11px; color: #999; }
+.connect-steps strong { color: #d3d3d3; }
+.device-list-heading { color: #aaa; font-size: 11px; }
+.device-list-heading button { color: #bcbcbc; font-size: 11px; }
+.dialog-device { background: #ffffff04; border-color: #ffffff1d; border-radius: 7px; padding: 13px; }
+.dialog-device > svg { color: #bbb; }
+.dialog-device strong { font-size: 12px; }
+.dialog-device small { color: #999; font-size: 10px; }
+.dialog-device > span:last-child { color: #b0c5b5; font-size: 10px; }
+.no-devices { color: #999; border-color: #ffffff20; font-size: 12px; }
+dialog details { color: #bbb; font-size: 11px; }
+dialog details p { color: #999; font-size: 11px; }
+.dialog-privacy { color: #929292; font-size: 10px; border-color: var(--line); }
+.toast { background: #303030; border-color: #ffffff25; color: #ddd; font-size: 12px; border-radius: 8px; box-shadow: 0 6px 30px #0004; }
+@media (max-width: 1200px) {
+  .sidebar { width: 202px; }
+  .app-shell { margin-left: 202px; }
+  main { padding: 22px 25px 0; }
+  .topbar, .desktop-mac .topbar { padding: 0 25px; }
+  .main-grid { grid-template-columns: minmax(0, 1fr) 230px; gap: 22px; }
+  .metric-card.panel { padding: 2px 16px 0; }
+  .metric-card:first-child { padding-left: 0; }
+  .metric-card:last-child { padding-right: 0; }
+  .metric-value > strong { font-size: 34px; }
+  .metric-state { font-size: 9px !important; }
+  .metric-foot { font-size: 9px; }
+  .core-card { padding: 12px 9px; }
+  .core-freq { font-size: 15px; }
+  .freq-note { display: none; }
+  .toast { left: calc(50% + 101px); }
+}
+@media (max-width: 1000px) {
+  .sidebar { width: 74px; padding: 25px 10px 0; }
+  .app-shell { margin-left: 74px; }
+  .brand { padding: 0; }
+  .brand-mark { width: 29px; height: 29px; }
+  .nav-item { padding: 12px 10px; }
+  .sidebar-device { padding: 10px 0; }
+  .chart-actions { flex-direction: row; align-items: center; }
+  .chart-actions > .icon-button { position: static; height: 27px; width: 27px; }
+  .chart-legend { gap: 12px; }
+  .legend-item { font-size: 10px; }
+  .main-grid { grid-template-columns: minmax(0, 1fr) 220px; }
+  .metric-value > strong { font-size: 32px; }
+  .metric-state { display: none; }
+  .cores-grid { gap: 7px; }
+  .core-freq { font-size: 14px; }
+  .hardware-row { grid-template-columns: 140px minmax(0, 1fr); gap: 15px; }
+  .toast { left: calc(50% + 37px); }
+}
+@media (max-width: 900px) {
+  .insight-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 0; }
+  .insight-metric:nth-child(2) { border-right: 0; padding-right: 0; }
+  .insight-metric:nth-child(3) { padding-left: 0; }
+  .insight-metric p { min-height: 0; }
+}
+@media (max-width: 800px) {
+  main { padding: 20px 22px 0; }
+  .topbar, .desktop-mac .topbar { padding: 0 22px; }
+  .page-heading { align-items: flex-start; }
+  .main-grid { grid-template-columns: 1fr; gap: 25px; }
+  .performance-panel { padding-right: 0; border-right: 0; }
+  .memory-panel { border-top: 1px solid var(--line); padding-top: 23px; }
+  .memory-panel .panel-header { grid-column: 1 / -1; }
+  .memory-panel .donut-container { width: 170px; height: 170px; margin: 10px auto 0; }
+  .memory-details { margin: 0 12px 0 0; }
+  .memory-note { position: static; grid-column: 1 / -1; }
+  .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 25px; }
+  .metric-card:nth-child(2) { border-right: 0; padding-right: 0; }
+  .metric-card:nth-child(3) { padding-left: 0; }
+  .metric-state { display: inline; }
+  .cores-panel { padding-right: 0; border-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 25px; }
+  .lower-grid { grid-template-columns: 1fr; }
+  .hardware-row dd { flex-direction: row; }
+}
+@media (max-width: 590px) {
+  .sidebar { display: none; }
+  .app-shell { margin-left: 0; }
+  .topbar { height: 52px; padding: 0 18px; }
+  .topbar-right { gap: 10px; }
+  .local-chip { display: none; }
+  main { padding: 18px 18px 0; }
+  .page-heading { flex-direction: column; gap: 17px; margin-bottom: 21px; }
+  h1 { font-size: 23px; }
+  .page-heading p { font-size: 11px; }
+  .heading-actions { width: 100%; }
+  .heading-actions .button { height: 33px; padding: 0 13px; }
+  .device-banner { padding: 16px; min-height: 0; flex-wrap: wrap; margin-bottom: 24px; }
+  .phone-visual { display: none; }
+  .device-banner-right { flex-direction: row; margin: 17px 0 0; gap: 20px; width: 100%; justify-content: space-between; }
+  .sample-indicator { display: flex; font-size: 9px; }
+  .battery-mini { font-size: 10px; }
+  .metric-card.panel { padding: 0 14px; }
+  .metric-card:nth-child(odd) { padding-left: 0; }
+  .metric-card:nth-child(even) { padding-right: 0; }
+  .metric-top { font-size: 11px; }
+  .metric-value > strong { font-size: 34px; }
+  .metric-state { font-size: 9px !important; }
+  .metric-foot { font-size: 9px; }
+  .mobile-nav { background: #ffffff04; border: 0; gap: 2px; padding: 4px; margin-bottom: 23px; }
+  .mobile-nav button { font-size: 11px; color: #999; }
+  .mobile-nav button.active { background: #383838; color: #eee; }
+  .panel-header h2 { font-size: 13px; }
+  .panel-header p { font-size: 10px; }
+  .chart-actions { gap: 5px; }
+  .segmented button { font-size: 9px; padding: 5px 6px; }
+  .chart-legend { gap: 14px; padding-top: 18px; }
+  .legend-item { font-size: 10px; }
+  .chart-container { height: 225px; }
+  .core-card { padding: 12px 10px; }
+  .core-freq { font-size: 16px; }
+  .hardware-intro-head { flex-direction: column; align-items: flex-start; gap: 13px; }
+  .hardware-introduction { font-size: 11px; }
+  .hardware-highlights { gap: 22px 15px; }
+  .hardware-highlight > strong { font-size: 16px; }
+  .hardware-provenance { gap: 7px; font-size: 10px; }
+  .hardware-summary { padding: 18px 0; }
+  .hardware-card-description { font-size: 10px; }
+  .hardware-rows { margin-left: 0; }
+  .hardware-row { grid-template-columns: 95px minmax(0, 1fr); gap: 12px; }
+  .hardware-row dt, .hardware-row-value { font-size: 11px; }
+  .hardware-row dd { flex-direction: column; gap: 6px; }
+  .hardware-row .hardware-source { font-size: 8px; }
+  .capability-tag { font-size: 10px; }
+  .insight-toolbar { padding: 14px; gap: 12px; }
+  .app-select-wrap label, .app-select-wrap select { font-size: 10px; }
+  .insight-toolbar > span { font-size: 9px; }
+  .insight-toolbar > .button { font-size: 10px; }
+  .insight-metric { padding: 0 15px; }
+  .insight-metric > span { font-size: 11px; }
+  .insight-metric > strong { font-size: 32px; }
+  .insight-metric p { font-size: 10px; }
+  .insight-range-bar { font-size: 9px; }
+  .insight-canvas-wrap { margin-left: 0; margin-right: 0; }
+  .frequency-legend { margin-left: 0; font-size: 9px; }
+  .sensor-row { grid-template-columns: 107px minmax(15px, 1fr) 60px; }
+  .sensor-row > span { font-size: 9px; }
+  .insight-description, .insight-note { font-size: 10px; }
+  .app-stat-grid strong { font-size: 18px; }
+  .session-panel { padding: 18px 15px; }
+  .session-heading h2 { font-size: 17px; }
+  .session-stats span { font-size: 10px; }
+  .session-stats strong { font-size: 17px; }
+  .page-footer { font-size: 9px; }
+  .toast { left: 50%; max-width: calc(100% - 32px); width: max-content; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hardware-summary::after { transition: none; }
+}

@@ -1,0 +1,26 @@
+/* Native macOS controls sit over the sidebar; the dashboard reaches the top edge. */
+.desktop-mac .sidebar {
+  padding-top: 64px;
+}
+.desktop-mac .sidebar::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 54px;
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+.desktop-mac .workspace {
+  margin-top: 26px;
+}
+.desktop-mac .topbar {
+  height: 64px;
+  background: var(--bg);
+  -webkit-app-region: drag;
+  app-region: drag;
+  user-select: none;
+}
+.desktop-mac :is(button, a, input, select, textarea, summary) {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}

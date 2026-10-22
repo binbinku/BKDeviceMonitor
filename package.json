@@ -1,0 +1,75 @@
+{
+  "name": "bk-device-monitor",
+  "version": "1.2.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "test": "node --test tests/*.test.mjs",
+    "web": "node server.mjs",
+    "prepare:adb": "node scripts/prepare-adb.mjs",
+    "pack:mac": "electron-builder --mac dir --arm64",
+    "build:mac": "electron-builder --mac zip --arm64 --x64",
+    "build:win": "electron-builder --win zip --x64"
+  },
+  "engines": {
+    "node": ">=22.12"
+  },
+  "description": "BKDeviceMonitor · 离线 Android 设备性能监测桌面应用",
+  "main": "desktop/main.mjs",
+  "author": "BK",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/binbinku/BKDeviceMonitor.git"
+  },
+  "license": "UNLICENSED",
+  "build": {
+    "appId": "com.bk.devicemonitor",
+    "productName": "BKDeviceMonitor",
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "artifactName": "BKDeviceMonitor-${version}-${os}-${arch}.${ext}",
+    "files": [
+      "desktop/**",
+      "public/**",
+      "*.mjs",
+      "package.json",
+      "!server.mjs"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": [
+        "zip"
+      ],
+      "identity": "-",
+      "extraResources": [
+        {
+          "from": "resources/darwin/platform-tools",
+          "to": "platform-tools"
+        }
+      ],
+      "icon": "build/icon.icns"
+    },
+    "win": {
+      "target": [
+        "zip"
+      ],
+      "extraResources": [
+        {
+          "from": "resources/win32/platform-tools",
+          "to": "platform-tools"
+        }
+      ],
+      "icon": "build/icon.png",
+      "signExecutable": false
+    }
+  },
+  "devDependencies": {
+    "@electron-internal/extract-zip": "1.0.6",
+    "electron": "45.0.0",
+    "electron-builder": "26.18.0"
+  }
+}
