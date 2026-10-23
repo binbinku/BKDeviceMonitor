@@ -36,3 +36,10 @@ export async function apkRequest(input) {
   if (result.error) throw new Error(result.error);
   return result;
 }
+
+export async function filesRequest(input) {
+  if (!isDesktop) throw new Error('设备文件功能仅在桌面版中提供。');
+  const result = await window.bkDeviceMonitor.files(input);
+  if (result.error) throw new Error(result.error);
+  return result;
+}

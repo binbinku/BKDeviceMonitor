@@ -5,11 +5,13 @@ import { writeFile } from 'node:fs/promises';
 import { createMonitor } from '../monitor.mjs';
 import { resolveAdb } from './adb.mjs';
 import { createApkInstaller } from './apk-installer.mjs';
+import { createDeviceFiles } from './device-files.mjs';
 
 const publicRoot = fileURLToPath(new URL('../public/', import.meta.url));
 app.setName('BKDeviceMonitor');
 protocol.registerSchemesAsPrivileged([{ scheme: 'bkdevicemonitor', privileges: { standard: true, secure: true, supportFetchAPI: true } }]);
-let window, monitor, installer;
+let window, monitor, installer, deviceFiles;
+let choosingDownload = false, waitingForTransfers = false;
 let choosingApk = false;
 const ownsInstance = app.requestSingleInstanceLock();
 if (!ownsInstance) app.quit();
@@ -59,6 +61,29 @@ if (ownsInstance) app.whenReady().then(async () => {
     getDevices: async () => (await monitor.request('/api/devices')).data.devices,
     onChange: state => { if (window && !window.isDestroyed()) window.webContents.send('bkdm:event', 'apk-install', state); }
   });
+  deviceFiles = createDeviceFiles({
+    adbPath,
+    getDevices: async () => (await monitor.request('/api/devices')).data.devices,
+    onChange: state => { if (window && !window.isDestroyed()) window.webContents.send('bkdm:event', 'file-transfers', state); }
+  });
+  ipcMain.handle('bkdm:files', async (event, input) => {
+    trusted(event);
+    try {
+      if (!input || typeof input !== 'object') throw new Error('无效的文件操作。');
+      if (input.action === 'state') return { state: deviceFiles.state() };
+      if (input.action === 'list') return { listing: await deviceFiles.list({ serial: input.serial, path: input.path }) };
+      if (input.action === 'cancel') return { state: deviceFiles.cancel(input.id) };
+      if (input.action === 'reveal') { shell.showItemInFolder(await deviceFiles.reveal(input.id)); return { revealed: true }; }
+      if (input.action !== 'download') throw new Error('无效的文件操作。');
+      if (choosingDownload || deviceFiles.isBusy()) throw new Error('已有下载任务或保存对话框打开，请稍候。');
+      choosingDownload = true;
+      try {
+        const result = await dialog.showOpenDialog(window, { title: '选择下载保存位置', defaultPath: app.getPath('downloads'), properties: ['openDirectory', 'createDirectory'] });
+        if (result.canceled || !result.filePaths.length) return { canceled: true, state: deviceFiles.state() };
+        return { state: deviceFiles.download({ serial: input.serial, paths: input.paths, destination: result.filePaths[0] }) };
+      } finally { choosingDownload = false; }
+    } catch (error) { return { error: error.message }; }
+  });
   ipcMain.handle('bkdm:apk', async (event, input) => {
     trusted(event);
     try {
@@ -96,4 +121,10 @@ if (ownsInstance) app.whenReady().then(async () => {
 
 // Closing the last window exits on both platforms, stopping all owned samplers.
 app.on('window-all-closed', () => app.quit());
-app.on('before-quit', () => { installer?.stop(); monitor?.stop(); });
+app.on('before-quit', event => {
+  installer?.stop(); monitor?.stop();
+  if (deviceFiles?.isBusy() && !waitingForTransfers) {
+    event.preventDefault(); waitingForTransfers = true;
+    void deviceFiles.stop().finally(() => app.quit());
+  } else void deviceFiles?.stop();
+});

@@ -23,6 +23,7 @@ A local Android performance monitor for your desktop. Connect a phone, inspect l
 - **Explore device hardware** — Browse CPU, GPU, display, storage, system, and sensor details, with device readings clearly distinguished from official model specifications.
 - **Keep a test record** — Capture sessions, peaks, and summaries; export CSV trends, JSON session reports, and hardware profiles.
 - **Install local APKs (v1.3.0 source)** — Use a native file picker, an explicit device target, background installation status, and actionable error messages.
+- **Browse and download device files (v1.4.0 source)** — Shared-storage shortcuts, path navigation, multi-selection, folder downloads, real byte progress, cancellation, and transfer records.
 - **Stay focused** — A Codex-inspired dark workspace, restrained chart colors, and an immersive macOS window. Desktop mode needs no separate backend.
 
 > 🔌 Connect over USB / ADB. No root, Shizuku, or companion phone app required. Once dependencies and ADB are prepared, monitoring and analysis work offline.
@@ -112,6 +113,20 @@ Available in the **current v1.3.0 source and local builds**. The published v1.2.
 Uses `adb install -r` to update an existing app while retaining its data. It never automatically uninstalls apps, forces a downgrade, or grants all runtime permissions. Signature conflicts, insufficient storage, USB install restrictions, and other common errors have actionable messages; expand the ADB details for raw output. Progress is indeterminate rather than a fabricated percentage. Closing the panel or reloading the UI does not stop the main-process job. Exiting the app stops the local command but cannot guarantee rollback of work already performed on the phone.
 
 Only standalone APKs are supported, not `.aab`, `.apks`, or split APK sets. Installation is desktop-only; web mode exposes no file installation endpoint.
+
+## 🗂 Device files & downloads
+
+The **current v1.4.0 source and local builds** add **设备文件** to the sidebar. The published v1.2.1 release does not include this feature.
+
+- Browse shared-storage shortcuts (downloads, camera photos, screenshots, documents) or enter a directory under `/sdcard`.
+- Sort by name, size, or modification time; filter the current directory, show hidden entries, and select multiple files or folders.
+- Choose **下载所选** (download selection) or **下载当前文件夹** (download current folder), then pick a local destination in the native dialog. One download batch runs at a time; batches allow up to 200 selected roots and a scan of at most 20,000 entries / 64 levels.
+- Tasks show actual bytes written, speed, and results, with cancellation and reveal-in-folder controls. Downloads survive UI reloads and page changes. The latest 20 task records remain in memory during this app run; resumable downloads are not supported.
+- Downloads are staged in a hidden temporary directory at the destination and published after size checks. Existing files are never overwritten: colliding names get numbered suffixes. Unsupported Windows characters and reserved names are converted to portable names. Failed or cancelled jobs clean temporary files; cleanup failures identify the remaining temporary directory.
+
+This first version provides read-only browsing of internal shared storage (`/sdcard`, including the `/storage/emulated/0` alias). It does not upload, delete, or rename phone files. Access to `Android/data` and `Android/obb` depends on device permissions; private application directories are outside the supported scope. Folder downloads include hidden regular files and skip symbolic links / special files. An unreadable subdirectory fails the batch with an explanation. Transfers stay bound to their selected device and never switch to another phone. Cancellation is unavailable during final publication of completed files.
+
+File operations use restricted desktop IPC, are not exposed through optional web mode, and do not upload phone files to the cloud.
 
 ## 🛠 Development & builds
 

@@ -4,7 +4,7 @@
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#1c1c1c"><meta name="description" content="BKDeviceMonitor — 通过 ADB 实时观察 Android 手机性能，查看详细硬件配置与系统信息。">
   <title>BKDeviceMonitor · 手机性能监测</title>
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/hardware.css"><link rel="stylesheet" href="/insights.css"><link rel="stylesheet" href="/desktop.css"><link rel="stylesheet" href="/theme.css"><link rel="stylesheet" href="/apk-install.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/hardware.css"><link rel="stylesheet" href="/insights.css"><link rel="stylesheet" href="/desktop.css"><link rel="stylesheet" href="/theme.css"><link rel="stylesheet" href="/apk-install.css"><link rel="stylesheet" href="/device-files.css">
 </head>
 <body>
   <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg"><defs>
@@ -15,6 +15,7 @@
     <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 5h4m-3 14h2"/></symbol>
     <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M6 15l4-5 4 3 6-8"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v10H3z"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H5v18h14V8zM14 3v6h5M8 13h8m-8 4h6"/></symbol>
     <symbol id="i-install" viewBox="0 0 24 24"><path d="M12 3v11m-4-4 4 4 4-4M4 15v6h16v-6"/></symbol>
     <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 4 12 8-12 8z"/></symbol>
@@ -38,6 +39,7 @@
       <button class="nav-item" data-view="memory" aria-label="内存分析" title="内存分析"><svg><use href="#i-memory"/></svg><span>内存分析</span></button>
       <button class="nav-item" data-view="insights" aria-label="深度监测" title="深度监测"><svg><use href="#i-chart"/></svg><span>深度监测</span></button>
       <button class="nav-item" data-view="hardware" aria-label="硬件信息" title="硬件信息"><svg><use href="#i-hardware"/></svg><span>硬件信息</span></button>
+      <button class="nav-item" data-view="files" aria-label="设备文件" title="设备文件" hidden><svg><use href="#i-folder"/></svg><span>设备文件</span></button>
     </nav>
     <div class="sidebar-divider"></div>
     <p class="nav-caption">当前设备 <span id="device-count">0</span></p>
@@ -45,7 +47,7 @@
     <div class="sidebar-bottom">
       <div class="local-note"><span class="local-indicator"></span><span>本地运行，数据留在此设备</span></div>
       <button class="help-button" id="help-button"><svg><use href="#i-help"/></svg>连接与指标说明<svg class="help-arrow"><use href="#i-chevron"/></svg></button>
-      <div class="sidebar-footer"><span>BKDeviceMonitor</span><span>v1.3.0</span></div>
+      <div class="sidebar-footer"><span>BKDeviceMonitor</span><span>v1.4.0</span></div>
     </div>
   </aside>
 
@@ -59,6 +61,21 @@
       <section class="device-banner panel"><div class="phone-visual" aria-hidden="true"><div class="phone-body"><div class="phone-camera"><span></span><span></span><span></span></div><span class="phone-logo">mi</span></div><div class="phone-aura"></div></div><div class="device-overview"><div class="device-title-line"><h2 id="device-name">Android 设备</h2><span class="connection-badge" id="connection-badge"><i></i>等待连接</span></div><div class="device-specs"><span id="chipset">—</span><span class="spec-dot">·</span><span id="device-ram">— RAM</span><span class="spec-dot">·</span><span id="android-version">Android —</span></div><div class="device-serial">设备序列号 <span id="serial">—</span><span class="usb-tag">USB / ADB</span></div></div><div class="device-banner-right"><div class="battery-mini"><span class="battery-shape"><i id="battery-fill"></i></span><strong id="battery-level">—</strong><svg><use href="#i-bolt"/></svg><span id="charging-status">电池状态</span></div><div class="sample-indicator"><span class="signal-bars"><i></i><i></i><i></i></span><span id="sample-summary">1 秒采样 · 实时同步</span></div></div></section>
 
       <nav class="mobile-nav" aria-label="移动端性能导航"><button class="active" data-view="overview">总览</button><button data-view="cpu">CPU</button><button data-view="gpu">GPU</button><button data-view="memory">内存</button><button data-view="insights">深度</button><button data-view="hardware">硬件</button></nav>
+      <section id="files-view" class="files-view" hidden aria-label="设备文件浏览与下载">
+        <div class="files-device-bar"><label for="files-device">浏览设备</label><select id="files-device"><option value="">正在检测设备…</option></select><button class="button secondary" id="files-devices-refresh" aria-label="刷新文件设备列表">↻ 刷新设备</button><span>内部共享存储 · 只读浏览</span></div>
+        <div class="files-workspace">
+          <aside class="files-shortcuts" aria-label="文件快捷目录"><p>快捷访问</p><button data-file-path="/sdcard"><svg><use href="#i-phone"/></svg>内部存储</button><button data-file-path="/sdcard/Download"><svg><use href="#i-arrow"/></svg>下载</button><button data-file-path="/sdcard/DCIM"><svg><use href="#i-folder"/></svg>相机照片</button><button data-file-path="/sdcard/Pictures/Screenshots"><svg><use href="#i-folder"/></svg>截图</button><button data-file-path="/sdcard/Documents"><svg><use href="#i-file"/></svg>文档</button><button data-file-path="/sdcard/Movies"><svg><use href="#i-folder"/></svg>视频</button><button data-file-path="/sdcard/Music"><svg><use href="#i-folder"/></svg>音乐</button></aside>
+          <div class="files-browser">
+            <div class="files-pathbar"><button class="icon-button" id="files-back" aria-label="返回上次目录">←</button><button class="icon-button" id="files-up" aria-label="返回上级目录">↑</button><nav id="files-breadcrumbs" aria-label="文件路径"></nav><button class="icon-button" id="files-refresh" aria-label="刷新当前目录">↻</button></div>
+            <form id="files-path-form"><label class="visually-hidden" for="files-path">手机目录路径</label><input id="files-path" value="/sdcard" spellcheck="false" autocomplete="off" aria-label="手机目录路径"><button class="button secondary" id="files-go">前往</button></form>
+            <div class="files-list-tools"><input id="files-search" type="search" placeholder="筛选当前目录…" aria-label="筛选当前目录"><label class="files-hidden-toggle"><input type="checkbox" id="files-hidden">显示隐藏项</label><select id="files-sort" aria-label="文件排序"><option value="name">名称 A–Z</option><option value="size">大小从大到小</option><option value="date">最近修改</option></select></div>
+            <div id="files-message" class="files-message" role="status">选择设备，浏览手机中的文件。</div>
+            <div class="files-table-wrap"><table class="files-table" aria-label="手机文件列表"><thead><tr><th><input type="checkbox" id="files-all" aria-label="选择当前显示的全部文件"></th><th>名称</th><th>类型</th><th>大小</th><th>修改时间</th></tr></thead><tbody id="files-body"></tbody></table></div>
+            <div class="files-selection-bar"><span id="files-selection">未选择文件</span><button class="button secondary" id="files-download-folder" disabled>下载当前文件夹</button><button class="button primary" id="files-download" disabled><svg><use href="#i-arrow"/></svg>下载所选</button></div>
+          </div>
+        </div>
+        <section class="files-transfers" aria-labelledby="files-transfers-title"><div class="files-transfer-heading"><h2 id="files-transfers-title">传输任务</h2><span id="files-transfer-summary">尚无下载任务</span></div><div id="files-jobs"><p class="files-task-empty">选择文件后下载到电脑，传输进度会显示在这里。</p></div><p class="files-footnote">同名文件自动编号，电脑不支持的文件名字符会替换；文件夹下载包含隐藏文件，跳过符号链接和特殊文件。权限不足的目录会显示原因。</p></section>
+      </section>
       <section id="insights-view" class="insights-view" hidden aria-label="深度性能监测">
         <div class="panel insight-toolbar"><div class="app-select-wrap"><label for="target-app">监测目标</label><select id="target-app"><option value="auto">自动跟随前台应用</option></select><button class="icon-button" id="refresh-apps" aria-label="刷新运行应用" title="刷新运行应用">↻</button></div><span id="target-description">等待识别前台应用</span><button class="button secondary" id="jump-session">测试会话 ↓</button><button class="button secondary" id="insight-pause">暂停显示</button></div>
         <div class="insight-metrics">
@@ -99,7 +116,7 @@
     </main>
   </div>
 
-  <dialog id="connection-dialog"><div class="dialog-heading"><span class="dialog-icon"><svg><use href="#i-link"/></svg></span><button class="icon-button" id="close-dialog" aria-label="关闭"><svg><use href="#i-close"/></svg></button></div><h2>连接设备</h2><p class="dialog-description">通过 USB 连接 Android 手机，开启本地实时监测。</p><div class="connect-steps"><div><span>01</span><p>在手机「开发者选项」中开启 <strong>USB 调试</strong></p></div><div><span>02</span><p>用 USB 数据线连接电脑，在手机上点击 <strong>允许调试</strong></p></div><div><span>03</span><p>从下面选择设备，即可开始采集</p></div></div><div class="device-list-heading"><span>可用设备</span><button id="refresh-devices">↻ 刷新列表</button></div><div id="dialog-devices"></div><details><summary>这些指标如何计算？</summary><p>CPU：/proc/stat 两次采样的非空闲时间占比，整机及各核心均为 0–100%。内存：1 − MemAvailable / MemTotal。GPU：KGSL gpubusy 的 busy / total。温度来自电池传感器，不代表 CPU 核心温度。进程 CPU 按核心数归一化至整机口径。设备切换后清空当前历史；重新加载界面可恢复本次运行期间最近 15 分钟数据。</p></details><p class="dialog-privacy"><svg><use href="#i-check"/></svg>所有数据仅在本机处理，ADB 只执行读取命令。</p></dialog>
+  <dialog id="connection-dialog"><div class="dialog-heading"><span class="dialog-icon"><svg><use href="#i-link"/></svg></span><button class="icon-button" id="close-dialog" aria-label="关闭"><svg><use href="#i-close"/></svg></button></div><h2>连接设备</h2><p class="dialog-description">通过 USB 连接 Android 手机，开启本地实时监测。</p><div class="connect-steps"><div><span>01</span><p>在手机「开发者选项」中开启 <strong>USB 调试</strong></p></div><div><span>02</span><p>用 USB 数据线连接电脑，在手机上点击 <strong>允许调试</strong></p></div><div><span>03</span><p>从下面选择设备，即可开始采集</p></div></div><div class="device-list-heading"><span>可用设备</span><button id="refresh-devices">↻ 刷新列表</button></div><div id="dialog-devices"></div><details><summary>这些指标如何计算？</summary><p>CPU：/proc/stat 两次采样的非空闲时间占比，整机及各核心均为 0–100%。内存：1 − MemAvailable / MemTotal。GPU：KGSL gpubusy 的 busy / total。温度来自电池传感器，不代表 CPU 核心温度。进程 CPU 按核心数归一化至整机口径。设备切换后清空当前历史；重新加载界面可恢复本次运行期间最近 15 分钟数据。</p></details><p class="dialog-privacy"><svg><use href="#i-check"/></svg>性能数据仅在本机处理，采集使用只读命令。</p></dialog>
   <dialog id="apk-dialog" aria-labelledby="apk-title">
     <div class="dialog-heading"><span class="dialog-icon"><svg><use href="#i-install"/></svg></span><button class="icon-button" id="apk-close" aria-label="收起安装面板"><svg><use href="#i-close"/></svg></button></div>
     <h2 id="apk-title">安装 APK</h2><p class="dialog-description">选择本地安装包，将应用安装到指定的 Android 设备。</p>

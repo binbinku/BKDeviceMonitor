@@ -1,4 +1,5 @@
 import { request, openEvents, saveDownload, isDesktop } from './transport.js';
+import { initDeviceFiles } from './device-files.js';
 import { initApkInstall } from './apk-install.js';
 import { renderHardware, resetHardware } from './hardware-view.js';
 import { initInsights, hydrateInsights, sampleInsights, updateInsightSession, updateInsightTarget, setInsightConnection, setInsightPaused, resetInsights, exportInsights } from './insights.js';
@@ -8,8 +9,9 @@ if (window.bkDeviceMonitor?.platform === 'darwin') document.documentElement.clas
 const $ = id => document.getElementById(id);
 const colors = { cpu: '#91c5a1', gpu: '#b2a0cf', memory: '#8faed0' };
 const labels = { cpu: 'CPU', gpu: 'GPU', memory: '内存' };
-const viewNames = { overview: '性能总览', cpu: 'CPU 处理器', gpu: 'GPU 图形', memory: '内存分析', hardware: '硬件信息', insights: '深度监测' };
+const viewNames = { ...(isDesktop ? { files: '设备文件' } : {}), overview: '性能总览', cpu: 'CPU 处理器', gpu: 'GPU 图形', memory: '内存分析', hardware: '硬件信息', insights: '深度监测' };
 const descriptions = { overview: '实时查看设备负载、内存和温度。', cpu: '查看各核心负载、实时频率与调度变化。', gpu: '查看图形负载与应用渲染表现。', memory: '查看内存分配、可用空间与进程占用。' };
+descriptions.files = '浏览手机共享存储，将文件和文件夹保存到电脑。';
 descriptions.hardware = '设备配置、系统版本与硬件能力。';
 descriptions.insights = '跟踪应用帧率、温控与功率，记录测试会话。';
 let history = [], latest = null, deviceInfo = null, connected = false, paused = false, pauseTime = 0;
@@ -236,6 +238,7 @@ function applyState(state, reset = false) {
 
 const events = openEvents();
 initApkInstall({ events, toast });
+const filesView = initDeviceFiles({ events, toast });
 events.addEventListener('init', event => applyState(JSON.parse(event.data)));
 events.addEventListener('reset', event => applyState(JSON.parse(event.data), true));
 events.addEventListener('sample', event => appendSample(JSON.parse(event.data)));
@@ -250,6 +253,9 @@ events.addEventListener('target', event => updateInsightTarget(JSON.parse(event.
 function changeView(next) {
   if (!Object.hasOwn(viewNames, next)) return;
   view = next; document.body.dataset.view = next;
+  $('files-view').hidden = next !== 'files';
+  filesView.setView(next === 'files');
+  $('export-button').hidden = next === 'files';
   $('hardware-view').hidden = next !== 'hardware';
   $('insights-view').hidden = next !== 'insights';
   window.history.replaceState(null, '', `#${next}`);
@@ -258,12 +264,12 @@ function changeView(next) {
     button.setAttribute('aria-pressed', String(button.dataset.view === next));
   });
   text('page-title', viewNames[next]);
-  const live = document.createElement('span'); live.className = next === 'hardware' ? 'live-label hardware-label' : 'live-label'; live.innerHTML = next === 'hardware' ? '设备配置' : '<i></i>实时'; $('page-title').append(live);
+  const live = document.createElement('span'); live.className = ['hardware', 'files'].includes(next) ? 'live-label hardware-label' : 'live-label'; live.innerHTML = next === 'hardware' ? '设备配置' : next === 'files' ? '文件浏览' : '<i></i>实时'; $('page-title').append(live);
   text('breadcrumb', viewNames[next]); text('page-description', descriptions[next]);
-  visible = new Set(['overview', 'hardware', 'insights'].includes(next) ? ['cpu', 'gpu', 'memory'] : [next]);
+  visible = new Set(['overview', 'hardware', 'insights', 'files'].includes(next) ? ['cpu', 'gpu', 'memory'] : [next]);
   $('export-button').innerHTML = `<svg><use href="#i-arrow"/></svg>${next === 'hardware' ? '导出配置' : next === 'insights' ? '导出采样' : '导出数据'}`;
   document.querySelectorAll('[data-series]').forEach(b => { b.classList.toggle('disabled', !visible.has(b.dataset.series)); b.setAttribute('aria-pressed', String(visible.has(b.dataset.series))); });
-  text('chart-title', ['overview', 'hardware', 'insights'].includes(next) ? '实时性能趋势' : `${labels[next]} 使用率趋势`);
+  text('chart-title', ['overview', 'hardware', 'insights', 'files'].includes(next) ? '实时性能趋势' : `${labels[next]} 使用率趋势`);
   const liveChart = document.createElement('span'); liveChart.id = 'chart-live'; liveChart.className = 'tiny-live'; liveChart.innerHTML = `<i></i>${paused ? '暂停' : '实时'}`; $('chart-title').append(liveChart);
   text('chart-subtitle', next === 'overview' ? 'CPU、GPU 与内存使用率的连续采样' : next === 'cpu' ? '整机负载按所有核心归一化至 0–100%' : next === 'gpu' ? '来自 KGSL 驱动的真实图形负载' : '使用率 = 1 − 可用内存 / 物理内存');
   $('gpu-detail').hidden = next !== 'gpu';
@@ -369,6 +375,6 @@ requestDraw();
 if (isDesktop) {
   document.querySelector('.workspace small').textContent = 'USB 设备监测';
   document.querySelector('.local-chip').replaceChildren(Object.assign(document.createElement('span')), document.createTextNode('本地采集'));
-  document.querySelector('.sidebar-footer span:last-child').textContent = 'v1.3.0';
+  document.querySelector('.sidebar-footer span:last-child').textContent = 'v1.4.0';
   document.querySelector('.workspace-dots').textContent = '•';
 }
