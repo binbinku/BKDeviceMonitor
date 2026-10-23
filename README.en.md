@@ -16,14 +16,16 @@ A local Android performance monitor for your desktop. Connect a phone, inspect l
 
 </div>
 
+> 🆕 **v1.4.0** adds device file browsing, multi-selection and folder downloads, and includes APK installation. [Download the latest release →](https://github.com/binbinku/BKDeviceMonitor/releases/latest)
+
 ## ✨ What you can do
 
 - **Watch workloads change** — Track total and per-core CPU load, live frequencies, GPU, memory, and battery status with continuous charts and hover readings.
 - **Inspect app performance** — Follow the foreground app or select a running one to inspect app CPU and memory, plus FPS, frame intervals, and jank where available.
 - **Explore device hardware** — Browse CPU, GPU, display, storage, system, and sensor details, with device readings clearly distinguished from official model specifications.
 - **Keep a test record** — Capture sessions, peaks, and summaries; export CSV trends, JSON session reports, and hardware profiles.
-- **Install local APKs (v1.3.0 source)** — Use a native file picker, an explicit device target, background installation status, and actionable error messages.
-- **Browse and download device files (v1.4.0 source)** — Shared-storage shortcuts, path navigation, multi-selection, folder downloads, real byte progress, cancellation, and transfer records.
+- **Install local APKs** — Use a native file picker, an explicit device target, background installation status, and actionable error messages.
+- **Browse and download device files** — Shared-storage shortcuts, path navigation, multi-selection, folder downloads, real byte progress, cancellation, and transfer records.
 - **Stay focused** — A Codex-inspired dark workspace, restrained chart colors, and an immersive macOS window. Desktop mode needs no separate backend.
 
 > 🔌 Connect over USB / ADB. No root, Shizuku, or companion phone app required. Once dependencies and ADB are prepared, monitoring and analysis work offline.
@@ -55,6 +57,8 @@ A local Android performance monitor for your desktop. Connect a phone, inspect l
 | Network | Device-wide upload / download rates |
 | Hardware profile | SoC, GPU, display modes, RAM / storage, system build, security patch, sensors, and official specifications for matching models |
 | Trends & reports | 1 / 5 / 15-minute trends, display pause, CSV exports, session JSON, and hardware JSON |
+| APK installation | Native file selection, explicit device target, updates retaining app data, background status, and error details |
+| Device files | Shared-storage browsing, multi-selection / folder downloads, real byte progress, cancellation, and automatic collision numbering |
 
 **Every metric has a source and a limit.** Unsupported or unreadable values display `—`. Missing data is never filled with simulated values, and display refresh rate is never used as FPS. GPU, Perfetto, temperature, and PSI availability depend on Android version, vendor interfaces, and permissions.
 
@@ -64,15 +68,15 @@ CPU is normalized to a device-wide `0–100%` scale. Memory utilization is `1 �
 
 ### Download the desktop app
 
-Open the **[v1.2.1 Release](https://github.com/binbinku/BKDeviceMonitor/releases/tag/v1.2.1)**, or download the package for your computer:
+Open the **[v1.4.0 Release](https://github.com/binbinku/BKDeviceMonitor/releases/tag/v1.4.0)**, or download the package for your computer:
 
 | Your computer | Package |
 | :--- | :--- |
-| Mac · Apple Silicon (M series) | [macOS ARM64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-mac-arm64.zip) |
-| Mac · Intel | [macOS x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-mac-x64.zip) |
-| Windows 11 · x64 | [Windows x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-win-x64.zip) |
+| Mac · Apple Silicon (M series) | [macOS ARM64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.4.0/BKDeviceMonitor-1.4.0-mac-arm64.zip) |
+| Mac · Intel | [macOS x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.4.0/BKDeviceMonitor-1.4.0-mac-x64.zip) |
+| Windows 11 · x64 | [Windows x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.4.0/BKDeviceMonitor-1.4.0-win-x64.zip) |
 
-On Mac, extract and move `BKDeviceMonitor.app` to Applications. On Windows, extract the entire archive and run `BKDeviceMonitor.exe`. The release includes `SHA256SUMS.txt` for verification.
+On Mac, extract and move `BKDeviceMonitor.app` to Applications. On Windows, extract the entire archive and run `BKDeviceMonitor.exe`. The release includes [SHA256SUMS.txt](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.4.0/SHA256SUMS.txt) for verification.
 
 ### Run from source
 
@@ -104,7 +108,7 @@ Download a desktop package, run from source, or build your own package. Packages
 
 ## 📦 Install an APK
 
-Available in the **current v1.3.0 source and local builds**. The published v1.2.1 release does not include this feature.
+**The v1.4.0 desktop release includes APK installation.** Download a desktop package to use it without running from source.
 
 1. Click **安装 APK** at the top right of the desktop app, then **选择文件** to open the native file picker.
 2. Choose a local standalone `.apk` file and verify the filename, target device model, and serial number.
@@ -116,7 +120,7 @@ Only standalone APKs are supported, not `.aab`, `.apks`, or split APK sets. Inst
 
 ## 🗂 Device files & downloads
 
-The **current v1.4.0 source and local builds** add **设备文件** to the sidebar. The published v1.2.1 release does not include this feature.
+**The v1.4.0 desktop release includes device file browsing and downloads.** Open **设备文件** in the sidebar to get started.
 
 - Browse shared-storage shortcuts (downloads, camera photos, screenshots, documents) or enter a directory under `/sdcard`.
 - Sort by name, size, or modification time; filter the current directory, show hidden entries, and select multiple files or folders.
@@ -134,7 +138,7 @@ File operations use restricted desktop IPC, are not exposed through optional web
 | :--- | :--- |
 | `npm start` / `npm run dev` | Launch the Electron desktop app |
 | `npm run prepare:adb` | Download official ADB and preserve upstream notices, source metadata, and archive SHA-256 records |
-| `npm test` | Run parser, engine, session, and local access restriction tests |
+| `npm test` | Run performance, APK installation, file transfer, and access restriction tests |
 | `npm run pack:mac` | Generate an app directory for Apple Silicon Macs |
 | `npm run build:mac` | Build macOS ARM64 and x64 ZIP packages |
 | `npm run build:win` | Build a Windows x64 ZIP package |

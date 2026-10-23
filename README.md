@@ -16,14 +16,16 @@
 
 </div>
 
+> 🆕 **v1.4.0** 新增设备文件浏览、多选与文件夹下载，并包含 APK 安装功能。[下载最新版本 →](https://github.com/binbinku/BKDeviceMonitor/releases/latest)
+
 ## ✨ 你可以用它做什么
 
 - **观察每一次负载变化** — CPU 总体与逐核负载、实时频率、GPU、内存和电池状态，配合连续趋势与悬停读数。
 - **追踪应用表现** — 跟随前台或选择运行中的应用，查看应用 CPU、内存，以及可用时的 FPS、帧间隔和卡顿数据。
 - **了解这台设备** — 处理器、GPU、屏幕、存储、系统与传感器分组展示，每项区分设备实读与官方型号规格。
 - **留存一次完整测试** — 记录测试会话、峰值与汇总，导出 CSV 趋势、JSON 报告和硬件配置。
-- **安装本地 APK（v1.3.0 源码）** — 系统文件选择器、明确选择设备、后台安装状态与常见错误提示。
-- **浏览与下载手机文件（v1.4.0 源码）** — 共享存储快捷目录、路径导航、多选与文件夹下载，附真实字节进度、取消和传输记录。
+- **安装本地 APK** — 系统文件选择器、明确选择设备、后台安装状态与常见错误提示。
+- **浏览与下载手机文件** — 共享存储快捷目录、路径导航、多选与文件夹下载，附真实字节进度、取消和传输记录。
 - **保持专注** — Codex 风格的深灰界面、低饱和曲线、macOS 沉浸式窗口；桌面模式无需单独启动后端。
 
 > 🔌 通过 USB / ADB 连接，无需 Root、Shizuku 或安装手机端应用。准备好依赖与 ADB 后，采集和分析可离线完成。
@@ -55,6 +57,8 @@
 | 网络 | 整机网络上传 / 下载速率 |
 | 硬件档案 | SoC、GPU、显示模式、RAM / 存储、系统构建、安全补丁、传感器及匹配型号的官方规格 |
 | 趋势与报告 | 1 / 5 / 15 分钟趋势、暂停显示、CSV 导出、测试会话 JSON、硬件 JSON |
+| APK 安装 | 本地文件选择、指定设备、保留数据覆盖更新、后台状态与错误详情 |
+| 设备文件 | 共享存储浏览、多选 / 文件夹下载、真实字节进度、取消、同名自动编号 |
 
 **数据有来源，也有边界。** 不可读或不支持的指标显示 `—`；不会以模拟数值填充，也不会把屏幕刷新率当作 FPS。GPU、Perfetto、温度和 PSI 的可用性取决于 Android 版本、厂商接口与权限。
 
@@ -64,15 +68,15 @@ CPU 以整机 `0–100%` 归一化；内存使用率为 `1 − MemAvailable / Me
 
 ### 下载桌面版
 
-前往 **[v1.2.1 Release](https://github.com/binbinku/BKDeviceMonitor/releases/tag/v1.2.1)**，或按电脑平台直接下载：
+前往 **[v1.4.0 Release](https://github.com/binbinku/BKDeviceMonitor/releases/tag/v1.4.0)**，或按电脑平台直接下载：
 
 | 你的电脑 | 安装包 |
 | :--- | :--- |
-| Mac · Apple Silicon（M 系列） | [macOS ARM64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-mac-arm64.zip) |
-| Mac · Intel | [macOS x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-mac-x64.zip) |
-| Windows 11 · x64 | [Windows x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.2.1/BKDeviceMonitor-1.2.1-win-x64.zip) |
+| Mac · Apple Silicon（M 系列） | [macOS ARM64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.4.0/BKDeviceMonitor-1.4.0-mac-arm64.zip) |
+| Mac · Intel | [macOS x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.4.0/BKDeviceMonitor-1.4.0-mac-x64.zip) |
+| Windows 11 · x64 | [Windows x64 ZIP](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.4.0/BKDeviceMonitor-1.4.0-win-x64.zip) |
 
-Mac 解压后将 `BKDeviceMonitor.app` 放入「应用程序」；Windows 解压完整目录后运行 `BKDeviceMonitor.exe`。Release 附有 `SHA256SUMS.txt` 供校验。
+Mac 解压后将 `BKDeviceMonitor.app` 放入「应用程序」；Windows 解压完整目录后运行 `BKDeviceMonitor.exe`。Release 附有 [SHA256SUMS.txt](https://github.com/binbinku/BKDeviceMonitor/releases/download/v1.4.0/SHA256SUMS.txt) 供校验。
 
 ### 从源码启动
 
@@ -104,7 +108,7 @@ Windows 若无法识别 ADB 设备，请安装手机厂商的 USB 驱动。准�
 
 ## 📦 安装 APK
 
-此功能在 **v1.3.0 当前源码及本地构建版** 中提供，已发布的 v1.2.1 不包含此功能。
+**v1.4.0 桌面版已包含 APK 安装功能。** 下载后即可使用，无需从源码运行。
 
 1. 在桌面版右上角点击「安装 APK」，再点击「选择文件」。
 2. 选择一个本地独立 `.apk` 文件，确认文件名和目标设备的型号、序列号。
@@ -116,7 +120,7 @@ Windows 若无法识别 ADB 设备，请安装手机厂商的 USB 驱动。准�
 
 ## 🗂 设备文件与下载
 
-**v1.4.0 当前源码及本地构建版** 提供侧栏「设备文件」页面；已发布的 v1.2.1 不包含此功能。
+**v1.4.0 桌面版已提供「设备文件」页面。** 在侧栏打开即可浏览并下载手机文件。
 
 - 从内部存储、下载、相机照片、截图、文档等快捷入口浏览，也可输入 `/sdcard` 下的目录路径。
 - 按名称、大小、修改时间排序；筛选当前目录，显示隐藏项，多选文件与文件夹。
@@ -134,7 +138,7 @@ Windows 若无法识别 ADB 设备，请安装手机厂商的 USB 驱动。准�
 | :--- | :--- |
 | `npm start` / `npm run dev` | 启动 Electron 桌面应用 |
 | `npm run prepare:adb` | 下载官方 ADB，保留上游 NOTICE 与来源 / SHA-256 记录 |
-| `npm test` | 运行解析、采集引擎、会话与本地访问限制测试 |
+| `npm test` | 运行性能、APK 安装、文件传输与访问限制测试 |
 | `npm run pack:mac` | 生成当前 Apple Silicon Mac 的应用目录 |
 | `npm run build:mac` | 构建 macOS ARM64 与 x64 ZIP |
 | `npm run build:win` | 构建 Windows x64 ZIP |
